@@ -599,9 +599,6 @@ MonoBehaviour:
   gravity: 9.81
   velocity: {x: 0, y: 0, z: 0}
   rotationSpeed: 5
-  Cam1: {fileID: 0}
-  Cam2: {fileID: 0}
-  Cam3: {fileID: 0}
 --- !u!143 &5286950024868103573
 CharacterController:
   m_ObjectHideFlags: 0
@@ -626,7 +623,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.64, z: 0}
+  m_Center: {x: 0, y: 0.704, z: 0}
 --- !u!114 &2346938953655002145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -671,10 +668,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.29730475
-  m_Height: 1.380969
+  m_Radius: 0.3
+  m_Height: 1.4086835
   m_Direction: 1
-  m_Center: {x: -0.0024421215, y: 0.6740229, z: 0}
+  m_Center: {x: -0.0024421215, y: 0.70402825, z: 0.00011628866}
 --- !u!1 &1956518311737319085
 GameObject:
   m_ObjectHideFlags: 0

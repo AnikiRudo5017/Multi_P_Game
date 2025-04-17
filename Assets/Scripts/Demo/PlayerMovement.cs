@@ -15,13 +15,14 @@ public class PlayerMovement : NetworkBehaviour
     private string currentAnim;
     private bool _isGrounded;
 
-    public CinemachineCamera Cam1;
-    public CinemachineCamera Cam2;
-    public CinemachineCamera Cam3;
-
     private void Start()
     {
         _animator = GetComponent<Animator>();
+        if (_animator == null)
+        {
+            Debug.LogError("❌ Animator not found on " + gameObject.name);
+        }
+        if (RoomManager.Instance.isStarted == false) return;
     }
 
     public override void FixedUpdateNetwork()
@@ -30,7 +31,7 @@ public class PlayerMovement : NetworkBehaviour
         HandleMovement();
         HandleJump();
         velocity.y -= gravity * Runner.DeltaTime;
-        HandleCameraSwitch();
+        
     }
 
     private void HandleMovement()
@@ -53,7 +54,6 @@ public class PlayerMovement : NetworkBehaviour
             changeAnim("Idle");
         }
     }
-
     private void HandleJump()
     {
         if (controller.isGrounded)
@@ -66,34 +66,15 @@ public class PlayerMovement : NetworkBehaviour
             }
         }
     }
-
-    private void HandleCameraSwitch()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            SwitchCamera(Cam1);
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-            SwitchCamera(Cam2);
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-            SwitchCamera(Cam3);
-    }
-
-    private void SwitchCamera(CinemachineCamera activeCam)
-    {
-        Cam1.enabled = Cam1 == activeCam;
-        Cam2.enabled = Cam2 == activeCam;
-        Cam3.enabled = Cam3 == activeCam;
-    }
     private void changeAnim(string AnimName)
     {
         if (currentAnim != AnimName)
         {
-            _animator.ResetTrigger(AnimName);
+            _animator.ResetTrigger(currentAnim);
             currentAnim = AnimName;
             _animator.SetTrigger(currentAnim);
-
         }
     }
-
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Ground"))
