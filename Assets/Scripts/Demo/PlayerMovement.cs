@@ -1,6 +1,7 @@
 using System;
 using Fusion;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : NetworkBehaviour
@@ -10,24 +11,28 @@ public class PlayerMovement : NetworkBehaviour
     public float jumpForce = 10f;
     public float gravity = 9.81f;
     public Vector3 velocity;
-    public float rotationSpeed = 5f;
+    public float rotationSpeed = 15f;
     private Animator _animator;
     private string currentAnim;
     private bool _isGrounded;
+    public Transform cameraTransform;
 
-    private void Start()
+    public override void Spawned()
     {
         _animator = GetComponent<Animator>();
+        controller = GetComponent<CharacterController>();
         if (_animator == null)
         {
             Debug.LogError("❌ Animator not found on " + gameObject.name);
         }
-        if (RoomManager.Instance.isStarted == false) return;
+        // if (RoomManager.Instance.isStarted == false) return;
+        cameraTransform = Camera.main.transform;
     }
 
     public override void FixedUpdateNetwork()
     {
-        if (!Object.HasStateAuthority) return;
+        // if (RoomManager.Instance.isStarted == false) return;
+        if (!HasStateAuthority) return;
         HandleMovement();
         HandleJump();
         velocity.y -= gravity * Runner.DeltaTime;
@@ -39,6 +44,9 @@ public class PlayerMovement : NetworkBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
         Vector3 move = new Vector3(horizontal, 0, vertical).normalized;
+        Vector3 camForward = Vector3.Scale(cameraTransform.forward, new Vector3(1, 0, 1)).normalized;
+        Vector3 camRight = cameraTransform.right;
+        Vector3 moveDir = camForward * vertical + camRight * horizontal;
 
         if (move.magnitude >= 0.1f) // Chỉ di chuyển khi có input
         {
@@ -56,15 +64,15 @@ public class PlayerMovement : NetworkBehaviour
     }
     private void HandleJump()
     {
-        if (controller.isGrounded)
-        {
-            velocity.y = -2f; // Reset trọng lực khi chạm đất
+        // if (controller.isGrounded)
+        // {
+        //     velocity.y = -2f; // Reset trọng lực khi chạm đất
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 velocity.y = jumpForce;
             }
-        }
+        // }
     }
     private void changeAnim(string AnimName)
     {
@@ -84,6 +92,14 @@ public class PlayerMovement : NetworkBehaviour
         else
         {
             _isGrounded = false;
+        }
+    }
+
+    public void SpawnItem()
+    {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            
         }
     }
 }

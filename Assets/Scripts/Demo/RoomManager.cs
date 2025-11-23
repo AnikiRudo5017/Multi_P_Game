@@ -12,6 +12,7 @@ public class RoomManager : NetworkBehaviour
     [Networked] public bool GameStarted { get; set; } = false;
     private Dictionary<PlayerRef, int> playerIDs = new Dictionary<PlayerRef, int>();
     public Button startButton;
+    public GameObject noti;
     [Networked] public bool isStarted { get; set; } = false;
 
     private void Awake()
@@ -53,6 +54,10 @@ public class RoomManager : NetworkBehaviour
         if (Object.HasStateAuthority)
         {
             RPC_StartGame();
+        }
+        else
+        {
+            noti.SetActive(true);
         }
     }
 

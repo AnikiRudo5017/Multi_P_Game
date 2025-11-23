@@ -6,16 +6,18 @@ public class CameraFollow : MonoBehaviour
     public CinemachineCamera virtualCamera;
     private CinemachinePositionComposer positionComposer;
 
+
     public void AssignCamera(Transform playerTransform)
     {
-        // Gán mục tiêu Follow và LookAt cho camera
+        
         virtualCamera.Follow = playerTransform;
         virtualCamera.LookAt = playerTransform;
     }
+
+
     private void Start()
     {
-        //cinemachineFollow = virtualCamera.GetCinemachineComponent(CinemachineCore.Stage.Body) as CinemachineFollow;
-        // Lấy component Position Composer từ Virtual Camera
+        
         positionComposer = virtualCamera.GetCinemachineComponent(CinemachineCore.Stage.Body) as CinemachinePositionComposer;
 
         if (positionComposer == null)
